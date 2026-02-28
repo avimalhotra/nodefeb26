@@ -1,62 +1,76 @@
-import os from "node:os";
 import fs from "node:fs";
-import xlsx from 'node-xlsx';
+import path from "node:path";
+import EventEmitter from "node:events";
+const emitter=new EventEmitter();
 
-// console.log( os.cpus().length );
-// console.log( os.arch() );
-// console.log( os.totalmem()/1073741824 );
-// console.log( os.freemem()/1073741824 );
-// console.log(os.networkInterfaces());
-// console.log(os.platform());
-// console.log(os.type());
-// console.log(os.uptime()/3600);
-// console.log(os.userInfo());
+import { fileURLToPath } from 'url';
+import { dirname } from 'node:path';
+import { log } from "node:console";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// console.log(path.normalize("./src"));
+// console.log(path.normalize("./src//img"));
+// console.log(path.normalize("./src/img/../"));
+
+// console.log( path.basename("src/app") );
+// console.log( path.basename("src/app.js") );
+// console.log( path.basename("src/public/home.html",".html") );
+// console.log( path.basename("file:///C:/Users/Aashutosh/Desktop/techaltum%20assignment/arrays.html") );
+// console.log(path.basename('C:\\temp\\myfile.html'));
+
+// console.log( path.dirname("src/app/") );
+
+// console.log( path.extname("src/app.js") );
+
+// console.log( path.resolve("src/app.js") )
+// console.log( path.resolve(__dirname) );
+// console.log( path.resolve(__filename) );
+
+// console.log(path.resolve("src","app"));
+
+// console.log(path.join("./src","app"));
 
 
-// const data= fs.readFileSync("src/data.txt",{encoding:'utf-8'});
-// console.log( data );
+/* build in events */
 
-
-// fs.readFile("src/data.csv",{encoding:"utf-8"},(err,data)=>{
-//      if(err){ console.warn(err) }
-//      else{console.log(data)}
+// fs.ReadStream("./src/data.txt").on("open",()=>{
+//      console.log("file open");
 // });
 
-// fs.stat("src/data.txt",(err,stat)=>{
-//      if(err){ console.warn(err) }
-//      else{
-//           console.log(stat.size);
-//           console.log(stat.isFile());
-//           console.log(stat.isDirectory());
-//      }
-// });
-
-// fs.writeFile("src/data.txt","hello avi",'utf-8',(err)=>{
-//      console.log(err)
-// });
-
-// fs.appendFile("src/data.txt",`hello ${new Date().toLocaleString()}, \n`,'utf-8',(err)=>{
-//      console.log(err)
-// });
-
-
-// fs.unlink("src/demo.html",(err)=>{
-//      if(err){
-//           console.warn(err);
-//      }
-//      else{
-//           console.log("file deleted")
-//      }
+// fs.ReadStream("./src/data.txt").on("error",()=>{
+//      console.log("error found");
 // });
 
 
-// parseXlsx("src/data.xlsx").then(data=>{
-//      console.log(data);
+
+/* custom events */
+
+// emitter.on("setup",(user="user")=>{
+//      console.log(`Setup done by ${user}`);
+// });
+// emitter.on("setup",(user="user")=>{
+//      console.log(`again setup done by ${user}`);
 // });
 
+// emitter.emit("setup","avi");
+// emitter.emit("setup","isha");
 
-// const workSheetsFromFile = xlsx.parse(`src/data.xlsx`);
-// console.log(workSheetsFromFile[0].data);
+
+//  emitter.on("done",(x)=>{
+//      console.log(`done ${x} `);
+//  });
+//   emitter.on("done",(x)=>{
+//      // console.log(`done ${x} `);
+//      if(x){ console.log(`done ${x} `); }
+//  });
 
 
-console.log( "done" );
+emitter.once("done",(x)=>{
+     console.log(`done ${x} `);
+ });
+ 
+
+ emitter.emit("done",true);
+ emitter.emit("done",true);
